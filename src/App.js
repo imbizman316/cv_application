@@ -1,5 +1,7 @@
 import React from "react";
 import Education from "./components/Education";
+import Experience from "./components/Experience";
+import Coverletter from "./components/Coverletter";
 
 function App() {
 
@@ -17,17 +19,12 @@ function App() {
   const [eduCount, setEduCount] = React.useState(0);
   //const [schoolReal, setSchool] = React.useState("");
 
-  const [test, setText] = React.useState([
-    {
-      id: 100,
-      text: ""
-    },
-    {
-      id: 200,
-      text: ""
-    }
-  ])
+  //-------------Experience---------------------------------//
+  const [experience, setExperience] = React.useState([]);
+  const [expCount, setExpCount] = React.useState(0);
 
+  //-------------Coverletter---------------------------------//
+  const [coverletter, setCoverletter] = React.useState("");
 
   function handleClick() {
     setEdit(!edit);
@@ -67,8 +64,7 @@ function App() {
   }
 
   function setEduCountFunc() {
-    const tempCount = eduCount + 1
-    setEduCount(tempCount);    
+    setEduCount(eduCount + 1);    
   }
 
   //---Add education----------------//
@@ -77,6 +73,7 @@ function App() {
     setEduCountFunc()
     const tempEdu = edu;
     tempEdu.push({
+      key: eduCount,
       id: eduCount,
       school: "",
       major: "",
@@ -104,34 +101,41 @@ function App() {
 
   //---onChange Education Handler---------//
 
-  const changeEducation = (e) => {
+  const changeEducation = (e) => {    
 
-    console.log(e.target.name);
-    console.log(e.target.id);
-    console.log(e.target.value);
+    let tempEdu = []
 
-    
-
-    if (e.target.name === "schoolName") {
-
-      let tempEdu = [];
+    edu.forEach((each) => {
       
-      edu.forEach((one) => {
-        if (one.id === e.target.id) {
-          tempEdu.push({...one, school: e.target.value})
-        } else {
-          tempEdu.push(one)
+      if (parseInt(each.id) === parseInt(e.target.id)) {
+
+        if (e.target.name === "schoolName"){
+          tempEdu.push({...each, school: e.target.value})
+        } 
+
+        else if (e.target.name === "major"){
+          tempEdu.push({...each, major: e.target.value})
+        } 
+
+        else if (e.target.name === "start-year"){
+          tempEdu.push({...each, begin_year: e.target.value})
+        } 
+
+        else if (e.target.name === "end-year"){
+          tempEdu.push({...each, end_year: e.target.value})
+        } 
+        
+      } 
+
+      else
+        {
+          tempEdu.push(each)
         }
-      })
-
-      setEdu(tempEdu);
-
-    }
-
+    })    
     
-    console.log(edu);
+      setEdu(tempEdu)
 
-  }
+    } 
 
   //---Education edit Mode On -------//
   const editModeOn = (id) => {
@@ -150,6 +154,100 @@ function App() {
     
   }
 
+  //-------------------Experience Section-----------------------//
+  const increaseExperience = () => {
+    setExpCount(expCount + 1);
+  }
+
+  //-------------------Add Experience-----------------------//
+  
+  const addExperience = () => {
+    increaseExperience();
+    
+    let tempList = experience;
+
+    tempList.push({
+      key: expCount,
+      id: expCount,
+      company: "",
+      position: "",
+      main_tasks: "",
+      started: "",
+      finished: "",
+      isEdit: true,
+    })
+
+    setExperience(tempList);
+  }
+
+  //-------------------Delete Experience-----------------------//
+  const deleteExperience = (e) => {    
+
+    let tempList = [];
+
+    experience.forEach((each) => {
+
+      if (parseInt(each.id) !== parseInt(e.target.id)) {
+        tempList.push(each)
+      }
+
+    })
+
+    setExperience(tempList);
+
+  }
+
+  //-------------------Switch Edit On-----------------------//
+  const switchEditOn = (e) => {
+
+    let tempList = [];
+
+    experience.forEach((each) => {
+      if (parseInt(each.id) === parseInt(e.target.id)){
+        tempList.push({...each, isEdit: !each.isEdit})
+      } 
+      else {
+        tempList.push(each);
+      }
+    })
+
+    setExperience(tempList);
+
+  }
+
+  //-----------Handle Experience Change-----------------------//
+  const handleExperienceChange = (e) => {
+    
+    let tempList = [];
+
+    experience.forEach((each) => {
+      if (parseInt(each.id) === parseInt(e.target.id)) {
+        if (e.target.name === "company") {
+          tempList.push({...each, company: e.target.value})
+        }
+        else if (e.target.name === "position"){
+          tempList.push({...each, position: e.target.value})
+        }
+        else if (e.target.name === "main-tasks"){
+          tempList.push({...each, main_tasks: e.target.value})
+        }
+        else if (e.target.name === "start-date"){
+          tempList.push({...each, started: e.target.value})
+        }
+        else if (e.target.name === "finish-date"){
+          tempList.push({...each, finished: e.target.value})
+        }
+
+      }
+      else {
+        tempList.push(each);
+      }
+    })
+
+    setExperience(tempList);
+
+  }
+
   return (
     <>
       {/* --------------General Section-------------- */}
@@ -160,15 +258,15 @@ function App() {
         </div>
         <h1>
           CV - Mike Lee
-        </h1>
-
-        {/* //----------Change Test----------// */}
-        <input type="text" placeholder="school name" name="schoolName" value={test}/>
+        </h1>        
 
         {/* --------------General Display-------------- */}
         <h3>
           General
-        </h3>                
+        </h3>          
+
+        <button onClick={handleClick}>{edit ? "Edit" : "Confirm"}</button>      
+
         <div style={{border: "1px solid black"}}>
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC7LPfug8zNYc8fk6hc59Avfe6PZaOmVViFQ&usqp=CAU"/>
           {edit && nameEdit ?
@@ -219,10 +317,9 @@ function App() {
 
           ()=>{addEducation()}
 
-          }>Add education</button>        
+          }>Add education</button>            
         
-        {eduCount}
-        {edu.length > 0 && edu[edu.length - 1].id}        
+        
       </div>
       <>
         {edu.map((each) => {
@@ -230,7 +327,7 @@ function App() {
             <div>                    
               
               <Education
-
+                key= {each.key}
                 id = {each.id}
                 school = {each.school}
                 major = {each.major}
@@ -247,7 +344,31 @@ function App() {
             }
           )
         }
-        </>
+      </>
+      <h3>Experience</h3>
+      <button onClick={addExperience}>Add experience</button>
+      {
+        experience.map((each) => {
+          return (
+            <Experience 
+              deleteExperience={deleteExperience}
+              key={each.key}
+              id={each.id}
+              company={each.company}
+              position={each.position}
+              main_tasks={each.main_tasks}
+              started={each.started}
+              finished={each.finished}
+              isEdit={each.isEdit}
+              switchEditOn={switchEditOn}
+              handleExperienceChange={handleExperienceChange}
+            />
+          )
+        })
+      }
+
+      <h3>Coverletter</h3>
+      <Coverletter />
     </>
   );
 }

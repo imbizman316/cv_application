@@ -1,18 +1,18 @@
 import React from "react"
 
-export default function Education({id, school, major, begin_year, end_year, deleteEducation, isEdit, editModeOn, changeEducation, schoolReal}) {  
-
-  const [schooRealTime, setSchoolRealTime] = React.useState(school)
-  
+export default function Education({id, school, major, begin_year, end_year, deleteEducation, isEdit, editModeOn, changeEducation, }) {  
 
   return (
     <div>
       {id}
       {isEdit ? 
         <>
-          <input id={id} type="text" placeholder="school name" value={schooRealTime} name="schoolName" onChange={changeEducation}></input>
+          <input id={id} type="text" placeholder="school name" value={school} name="schoolName" onChange={changeEducation}></input>
+
           <input id={id} type="text" placeholder="major" value={major} name="major" onChange={changeEducation}></input>
+
           <input id={id} type="text" placeholder="start-year" value={begin_year} name="start-year" onChange={changeEducation}></input>
+
           <input id={id} type="text" placeholder="end-year" value={end_year} name="end-year" onChange={changeEducation}></input>
         </>
        : 
@@ -24,9 +24,8 @@ export default function Education({id, school, major, begin_year, end_year, dele
         </>
       }      
       <button onClick={()=>editModeOn(id)}>Edit</button>
-      <button onClick={()=>deleteEducation(id)}>Delete</button>      
-      <p>{`is Edit is ${isEdit}`}</p>
-      <p>------------------------------------------</p>
+      <button onClick={()=>deleteEducation(id)}>Delete</button>       
+      <p>-------------------------------------------------------</p>
     </div>
   )
 }
