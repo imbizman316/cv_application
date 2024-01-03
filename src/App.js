@@ -7,7 +7,7 @@ function App() {
 
   //-------------Image------------------------------------//
   const [imageEdit, setImageEdit] = React.useState(false);
-  const [imageURL, setImageURL] = React.useState("");
+  const [imageURL, setImageURL] = React.useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC7LPfug8zNYc8fk6hc59Avfe6PZaOmVViFQ&usqp=CAU");
   const [imageURLconfirm, setImageURLConfirm] = React.useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC7LPfug8zNYc8fk6hc59Avfe6PZaOmVViFQ&usqp=CAU")
 
   //-------------General---------------------------------//
@@ -30,6 +30,7 @@ function App() {
 
   //-------------Coverletter---------------------------------//
   const [coverletter, setCoverletter] = React.useState("");
+  const [coverletterEdit, setCoverLetterEdit] = React.useState(true);
 
   function handleClick() {
     setEdit(!edit);
@@ -271,6 +272,20 @@ function App() {
 
   }
 
+  //-----------Handle coverletter-----------------------//
+  const coverletterEditOn = () => {
+
+    setCoverLetterEdit(!coverletterEdit)
+
+  }
+
+  const handleCoverLetterChange = (e) => {
+
+    setCoverletter(e.target.value);
+
+  }
+
+
   return (
     <>
       {/* --------------General Section-------------- */}
@@ -283,7 +298,7 @@ function App() {
         <h1>
           CV Coverletter          
         </h1>        
-        <img src={imageURLconfirm}/>
+        <img src={imageURLconfirm} style={{width: "200px"}}/>
         {!imageEdit && <button onClick={imageEditHandle}>Change</button>}
         
         {imageEdit && 
@@ -400,8 +415,15 @@ function App() {
       }
 
       <h3>Coverletter</h3>
-      <Coverletter />
-      <div style={{backgroundColor: "black", height: "20px"}}></div>
+
+      <Coverletter 
+        coverletter={coverletter}
+        coverletterEdit={coverletterEdit}
+        coverletterEditOn={coverletterEditOn} 
+        handleCoverLetterChange={handleCoverLetterChange}
+      />
+
+      <div style={{backgroundColor: "black", height: "10px"}}></div>
     </>
   );
 }
