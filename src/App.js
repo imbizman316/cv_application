@@ -5,6 +5,11 @@ import Coverletter from "./components/Coverletter";
 
 function App() {
 
+  //-------------Image------------------------------------//
+  const [imageEdit, setImageEdit] = React.useState(false);
+  const [imageURL, setImageURL] = React.useState("");
+  const [imageURLconfirm, setImageURLConfirm] = React.useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC7LPfug8zNYc8fk6hc59Avfe6PZaOmVViFQ&usqp=CAU")
+
   //-------------General---------------------------------//
   const [edit,setEdit] = React.useState(false);
   const [name,setName] = React.useState("Enter your name");
@@ -28,6 +33,24 @@ function App() {
 
   function handleClick() {
     setEdit(!edit);
+  }
+
+  //----Image hadling----------------//
+  function imageEditHandle() {
+    setImageEdit(!imageEdit);
+  }
+
+  function imageURLSubmit(e) {
+     e.preventDefault();
+
+     setImageURLConfirm(imageURL);
+     setImageEdit(!imageEdit);
+  }
+
+  function urlChangeHandle(e) {
+
+    setImageURL(e.target.value);
+
   }
 
   //----Name hadling----------------//
@@ -253,12 +276,22 @@ function App() {
       {/* --------------General Section-------------- */}
       <div>
         
-        <div className="top" onClick={handleClick} style={{backgroundColor:"grey", height:"100px"}}>
+        <div style={{backgroundColor: "black", height: "10px"}}></div>
+        {/* <div className="top" onClick={handleClick} style={{backgroundColor:"grey", height:"100px"}}>
           {edit ? <>edit</> : <>no-edit</>}  
-        </div>
+        </div> */}
         <h1>
-          CV - Mike Lee
+          CV Coverletter          
         </h1>        
+        <img src={imageURLconfirm}/>
+        {!imageEdit && <button onClick={imageEditHandle}>Change</button>}
+        
+        {imageEdit && 
+          <form  onSubmit={imageURLSubmit}>
+            <input type="text" value={imageURL} onChange={urlChangeHandle}></input>
+            <button type="submit">Confirm</button>
+          </form>
+        }        
 
         {/* --------------General Display-------------- */}
         <h3>
@@ -267,8 +300,7 @@ function App() {
 
         <button onClick={handleClick}>{edit ? "Edit" : "Confirm"}</button>      
 
-        <div style={{border: "1px solid black"}}>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC7LPfug8zNYc8fk6hc59Avfe6PZaOmVViFQ&usqp=CAU"/>
+        <div style={{border: "1px solid black"}}>          
           {edit && nameEdit ?
             <div>
               <input type="text" value={name} onChange={(e)=>handleNameChange(e.target.value)}
@@ -369,6 +401,7 @@ function App() {
 
       <h3>Coverletter</h3>
       <Coverletter />
+      <div style={{backgroundColor: "black", height: "20px"}}></div>
     </>
   );
 }
